@@ -1,7 +1,6 @@
 package be_study.db.v2;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -253,5 +252,39 @@ public class DeptDAO {
 	public int removeDept(Dept dept) { //PK 컬럼인 deptno 값을 기준으로 삭제
 		return removeDept(dept.getDeptno());
 	}
+	
+	//Update
+	public int modifyDept(Dept dept) { //PK 컬럼인 deptno 값을 기준으로 다른 값들 다 수정
+		Connection conn = null; // db 연결
+		PreparedStatement psmt = null; // db연결하여 sql 명령 실행해주는 객체
+		ResultSet rs = null; // sql 실행 후 select 결과를 저장하는 객체
+		conn = DBConnectionManager.connectDB();
+
+		int result = 0;
+
+		// 실행 쿼리 준비
+		String sqlQuery = " update dept "
+						+ " set dname = ? , loc = ? "
+						+ " where deptno = ? ";
+
+		// 쿼리 실행 후 후속 데이터 처리
+		try {
+			psmt = conn.prepareStatement(sqlQuery);
+			// 파라미터 세팅
+			psmt.setString(1, dept.getDname());
+			psmt.setString(2, dept.getLoc());
+			psmt.setInt(3, dept.getDeptno());
+
+			// rs = psmt.executeQuery(); select
+			// insert, update, delete -> 적용된 행 갯수 -> executeUpdate();
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionManager.disconnectDB(conn, psmt, rs);
+		}
+		return result;
+	}
+
 
 }
