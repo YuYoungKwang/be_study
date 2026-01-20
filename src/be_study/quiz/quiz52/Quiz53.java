@@ -1,6 +1,6 @@
-package be_study.quiz.quiz54;
+package be_study.quiz.quiz52;
 
-public class Quiz55 {
+public class Quiz53 {
 
 	public static void main(String[] args) {
 		

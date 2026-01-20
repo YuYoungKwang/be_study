@@ -1,4 +1,4 @@
-package be_study.quiz.quiz54;
+package be_study.quiz.quiz52;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

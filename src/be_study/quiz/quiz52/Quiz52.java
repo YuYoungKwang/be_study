@@ -1,141 +1,25 @@
 package be_study.quiz.quiz52;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 public class Quiz52 {
 
-	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-		String jsonString = "{\r\n"
-				+ "\"id\": 1,\r\n"
-				+ "\"name\": \"John Doe\",\r\n"
-				+ "\"contacts\": [\r\n"
-				+ "{\r\n"
-				+ "\"type\": \"email\",\r\n"
-				+ "\"value\": \"john.doe@example.com\"\r\n"
-				+ "},\r\n"
-				+ "{\r\n"
-				+ "\"type\": \"phone\",\r\n"
-				+ "\"value\": \"01023456789\"\r\n"
-				+ "}\r\n"
-				+ "],\r\n"
-				+ "\"address\": {\r\n"
-				+ "\"street\": \"123 Main Street\",\r\n"
-				+ "\"city\": \"Seoul\",\r\n"
-				+ "\"zipcode\": \"12345\"\r\n"
-				+ "},\r\n"
-				+ "\"orders\": [\r\n"
-				+ "{\r\n"
-				+ "\"orderId\": \"ORD-001\",\r\n"
-				+ "\"date\": \"2024-07-09\",\r\n"
-				+ "\"items\": [\r\n"
-				+ "{\r\n"
-				+ "\"id\": 1,\r\n"
-				+ "\"name\": \"Smartphone\",\r\n"
-				+ "\"quantity\": 2\r\n"
-				+ "},\r\n"
-				+ "{\r\n"
-				+ "\"id\": 2,\r\n"
-				+ "\"name\": \"Laptop\",\r\n"
-				+ "\"quantity\": 1\r\n"
-				+ "}\r\n"
-				+ "]\r\n"
-				+ "},\r\n"
-				+ "{\r\n"
-				+ "\"orderId\": \"ORD-002\",\r\n"
-				+ "\"date\": \"2024-07-10\",\r\n"
-				+ "\"items\": [\r\n"
-				+ "{\r\n"
-				+ "\"id\": 3,\r\n"
-				+ "\"name\": \"Headphones\",\r\n"
-				+ "\"quantity\": 1\r\n"
-				+ "}\r\n"
-				+ "]\r\n"
-				+ "}\r\n"
-				+ "]\r\n"
-				+ "}";
-		
-		JSONParser parser = new JSONParser();
-		JSONObject obj = (JSONObject)parser.parse(jsonString);
-		
-		CustomerDTO customerDTO = new CustomerDTO();
-		
-		//customerDTO.setId( Integer.parseInt(obj.get("id").toString()) );
-		//customerDTO.setName(obj.get("name").toString());
+	public static void main(String[] args) {
 
-		customerDTO.setId( objectToInt(obj.get("id")) );
-		customerDTO.setName( objectToString(obj.get("name")) );
+		StudentDAO studentDAO = new StudentDAO();
 		
-		JSONArray contactsArray = (JSONArray)obj.get("contacts");
-		List<Contact> contacts = new ArrayList<Contact>();
-		for(int i=0; i<contactsArray.size(); i++) {
-			JSONObject contactObject = (JSONObject)contactsArray.get(i);
-			
-			Contact contact = new Contact();
-			contact.setType( objectToString(contactObject.get("type") ));
-			contact.setValue( objectToString(contactObject.get("value") ));
-			contacts.add(contact);
-		}
-		customerDTO.setContacts(contacts);
+		List<StudentDTO> list1 = studentDAO.findStudentList();
 		
-		
-		JSONObject addressObject = (JSONObject)obj.get("address");
-		Address address = new Address();
-		
-		address.setStreet( objectToString(addressObject.get("street")) );
-		address.setCity( objectToString(addressObject.get("city")) );
-		address.setZipcode( objectToString(addressObject.get("zipcode")) );
-		
-		customerDTO.setAddress(address);
-		
-		JSONArray ordersArray = (JSONArray)obj.get("orders");
-		List<Order> orders = new ArrayList<Order>();
-		
-		for(int i=0; i<ordersArray.size(); i++) {
-			JSONObject orderObject = (JSONObject)ordersArray.get(i);
-			
-			Order order = new Order();
-			order.setOrderId( objectToString(orderObject.get("orderId")) );
-			order.setDate( objectToString(orderObject.get("date")) );
-			
-			JSONArray itemsArray = (JSONArray)orderObject.get("items");
-			List<Item> items = new ArrayList<Item>();
-			for(int j=0; j<itemsArray.size(); j++) {
-				JSONObject itemObject = (JSONObject)itemsArray.get(j);
-				Item item = new Item();
-				
-				item.setId( objectToInt(itemObject.get("id")));
-				item.setName( objectToString(itemObject.get("name")));
-				item.setQuantity( objectToInt(itemObject.get("quantity")));
-				
-				items.add(item);
-			}
-			
-			order.setItems(items);
-			
-			orders.add(order);
+		for(StudentDTO s : list1) {
+			System.out.println(s);
 		}
 		
-		customerDTO.setOrders(orders);
+		List<StudentDTO> list2 = studentDAO.findStudentListByGrade(3);
 		
-		System.out.println(customerDTO); //JSON 파싱 -> DTO
-		
-	}
-	
-	public static int objectToInt(Object obj) {
-		return Integer.parseInt(obj.toString());
-	}
-	
-	public static String objectToString(Object obj) {
-		if(obj == null)
-			return null;   //return "";
-		else 
-			return obj.toString();
+		System.out.println("grade 기준 3학년 데이터******************");
+		for(StudentDTO s : list2) {
+			System.out.println(s);
+		}
 	}
 
 }

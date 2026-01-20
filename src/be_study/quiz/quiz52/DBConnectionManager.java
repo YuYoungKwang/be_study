@@ -1,4 +1,4 @@
-package be_study.quiz.quiz53;
+package be_study.quiz.quiz52;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
