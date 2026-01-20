@@ -5,19 +5,12 @@ public class MidTaDTO {
 	String resultCode;
 	String resultMsg;
 	
-	String tmFc;
+	String tmFc; //요청기준 날짜
 	String regId;
-	int taMin4;
+	int taMin4;   //minTemperatureAfter4days
 	int taMax4;
 	int taMin5;
 	int taMax5;
-	
-	
-	
-	public MidTaDTO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 	public String getResultCode() {
 		return resultCode;
@@ -67,7 +60,6 @@ public class MidTaDTO {
 	public void setTaMax5(int taMax5) {
 		this.taMax5 = taMax5;
 	}
-
 	@Override
 	public String toString() {
 		return "MidTaDTO [resultCode=" + resultCode + ", resultMsg=" + resultMsg + ", tmFc=" + tmFc + ", regId=" + regId

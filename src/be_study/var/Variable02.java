@@ -70,7 +70,7 @@ public class Variable02 {
 		boolean isClosed = false;
 
 		boolean hasOption = true;
-		
+		 
 		
 	}
 

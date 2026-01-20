@@ -1,41 +1,110 @@
 package be_study.quiz.quiz49;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Quiz49 {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
+
+		String jsonText = "{\r\n"
+				+ "\"employees\": [\r\n"
+				+ "{\r\n"
+				+ "\"id\": 1,\r\n"
+				+ "\"name\": \"홍길동\",\r\n"
+				+ "\"position\": \"개발자\",\r\n"
+				+ "\"salary\": 50000,\r\n"
+				+ "\"skills\": [\"Java\", \"Python\", \"SQL\"]\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "\"id\": 2,\r\n"
+				+ "\"name\": \"김철수\",\r\n"
+				+ "\"position\": \"디자이너\",\r\n"
+				+ "\"salary\": 40000,\r\n"
+				+ "\"skills\": [\"Photoshop\", \"Illustrator\"]\r\n"
+				+ "}\r\n"
+				+ "],\r\n"
+				+ "\"company\": {\r\n"
+				+ "\"name\": \"주식회사 ABC\",\r\n"
+				+ "\"address\": \"서울시 강남구\",\r\n"
+				+ "\"established\": \"1990-01-01\",\r\n"
+				+ "\"departments\": [\r\n"
+				+ "{\r\n"
+				+ "\"name\": \"개발부\",\r\n"
+				+ "\"employees\": [1, 3, 5]\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "\"name\": \"디자인부\",\r\n"
+				+ "\"employees\": [2, 4]\r\n"
+				+ "}\r\n"
+				+ "]\r\n"
+				+ "},\r\n"
+				+ "\"projects\": [\r\n"
+				+ "{\r\n"
+				+ "\"title\": \"사내 시스템 개발\",\r\n"
+				+ "\"budget\": 100000,\r\n"
+				+ "\"team\": [1, 3]\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "\"title\": \"웹 디자인 프로젝트\",\r\n"
+				+ "\"budget\": 80000,\r\n"
+				+ "\"team\": [2, 4]\r\n"
+				+ "}\r\n"
+				+ "]\r\n"
+				+ "}";
 		
-		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1160100/service/GetCredCardCompInfoService/getCredCardCompFinaInfo"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=서비스키"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
-        urlBuilder.append("&" + URLEncoder.encode("resultType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*결과형식(xml/json)*/
-        urlBuilder.append("&" + URLEncoder.encode("title","UTF-8") + "=" + URLEncoder.encode("신용카드_재무현황_요약재무상태표(자산)(07.12월이전)", "UTF-8")); /*신용카드사 재무현황*/
-        urlBuilder.append("&" + URLEncoder.encode("basYm","UTF-8") + "=" + URLEncoder.encode("200612", "UTF-8")); /*기준년월*/
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
-        BufferedReader rd;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-        rd.close();
-        conn.disconnect();
-        System.out.println(sb.toString());
+		JSONParser jsonParser = new JSONParser();
+		JSONObject obj = (JSONObject)jsonParser.parse(jsonText);
+		
+		JSONArray employees = (JSONArray)obj.get("employees");
+		
+		for(int i=0; i<employees.size(); i++) {
+			JSONObject emp = (JSONObject)employees.get(i);
+			System.out.println(emp.get("id"));
+			System.out.println(emp.get("name"));
+			System.out.println(emp.get("position"));
+			System.out.println(emp.get("salary"));
+			JSONArray skills = (JSONArray)emp.get("skills");
+			for(int j=0; j<skills.size(); j++) {
+				System.out.print(skills.get(j) + " ");
+			}
+			System.out.println();
+		}
+		
+		JSONObject company = (JSONObject)obj.get("company");
+		
+		System.out.println(company.get("name"));
+		System.out.println(company.get("address"));
+		System.out.println(company.get("established"));
+		
+		JSONArray departments = (JSONArray)company.get("departments");
+		
+		for(int i=0; i<departments.size(); i++) {
+			JSONObject department = (JSONObject)departments.get(i);
+			System.out.println(department.get("name"));
+			JSONArray emps = (JSONArray)department.get("employees");
+			for(int j=0; j<emps.size(); j++) {
+				System.out.print(emps.get(j) + " ");
+			}
+			System.out.println();
+		}
+		
+		JSONArray projects = (JSONArray)obj.get("projects");
+		
+		for(int i=0; i<projects.size(); i++) {
+			JSONObject project = (JSONObject)projects.get(i);
+			System.out.println(project.get("title"));
+			System.out.println(project.get("budget"));
+			JSONArray team = (JSONArray)project.get("team");
+			for(int j=0; j<team.size(); j++) {
+				System.out.print(team.get(j) + " ");
+			}
+			System.out.println();
+		}
+		
 	}
+
 }

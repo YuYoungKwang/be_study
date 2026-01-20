@@ -1,170 +1,42 @@
 package be_study.quiz.quiz47;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class Quiz47 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException  {
 		
-		Product p1 = findProductByPCode(104);
-		System.out.println(p1.getP_code() + " " + p1.getP_name() + " " + p1.getP_price());
-		
-		List<Product> productList2 = findProductList();
-		
-		if( productList2.size() == 0) {
-		}
-		
-		if( productList2 != null && productList2.size() > 0 ) {
-			
-			
-			for(Product p : productList2) {
-				System.out.println(p.toString());
-			}
-		}
+		 StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1160100/service/GetCredCardCompInfoService/getCredCardCompFinaInfo"); /*URL*/
+	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=서비스키"); /*Service Key*/
+	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
+	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
+	        urlBuilder.append("&" + URLEncoder.encode("resultType","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*결과형식(xml/json)*/
+	        urlBuilder.append("&" + URLEncoder.encode("title","UTF-8") + "=" + URLEncoder.encode("신용카드_재무현황_요약재무상태표(자산)(07.12월이전)", "UTF-8")); /*신용카드사 재무현황*/
+	        urlBuilder.append("&" + URLEncoder.encode("basYm","UTF-8") + "=" + URLEncoder.encode("200612", "UTF-8")); /*기준년월*/
+	        URL url = new URL(urlBuilder.toString());
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("GET");
+	        conn.setRequestProperty("Content-type", "application/json");
+	        System.out.println("Response code: " + conn.getResponseCode());
+	        BufferedReader rd;
+	        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+	            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	        } else {
+	            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+	        }
+	        StringBuilder sb = new StringBuilder();
+	        String line;
+	        while ((line = rd.readLine()) != null) {
+	            sb.append(line);
+	        }
+	        rd.close();
+	        conn.disconnect();
+	        System.out.println(sb.toString());
 	}
-	
-	public static Product findProductByPCode(int p_code) {
-		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-				
-		//DB 연결 정보
-		String db_url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String db_id = "scott";
-		String db_pw = "tiger";
-		
-		Connection conn = null; 
-		PreparedStatement psmt = null;  
-		ResultSet rs = null; 
-		
-		
-		//DB 연결
-		try {
-			conn = DriverManager.getConnection(db_url, db_id, db_pw);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		Product product = null;
-		
-		
-		String sqlQuery = " select * from Product where p_code = ? ";
-		
-		
-		try {
-			
-			psmt = conn.prepareStatement(sqlQuery);
-			
-			
-			psmt.setInt(1, p_code);
-			
-			rs = psmt.executeQuery();
-			
-			
-			if(rs.next()) {  
-				
-				product = new Product();
-				
-				product.setP_code( rs.getInt("p_code") );
-				product.setP_name( rs.getString("p_name") );
-				product.setP_price( rs.getInt("p_price"));
-			}
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		
-		try {
-			if(rs != null) {
-				rs.close();  
-			}
-			if(psmt != null) {
-				psmt.close();
-			}
-			if(conn != null) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return product;
-	}
-	
-	public static List<Product> findProductList() {
-		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-				
-		
-		String db_url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String db_id = "scott";
-		String db_pw = "tiger";
-		
-		Connection conn = null; 
-		PreparedStatement psmt = null; 
-		ResultSet rs = null; 
-		
-		
-		try {
-			conn = DriverManager.getConnection(db_url, db_id, db_pw);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		List<Product> productList = new ArrayList<Product>();
-		
 
-		String sqlQuery = " select * from Product ";
-		
-	
-		try {
-			
-			psmt = conn.prepareStatement(sqlQuery);			
-			rs = psmt.executeQuery();
-			
-			
-			while(rs.next()) {  
-				Product product = new Product();
-				product.setP_code( rs.getInt("p_code") );
-				product.setP_name( rs.getString("p_name") );
-				product.setP_price( rs.getInt("p_price"));
-				
-				productList.add(product); 
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			if(rs != null) {
-				rs.close(); 
-			}
-			if(psmt != null) {
-				psmt.close();
-			}
-			if(conn != null) {
-				conn.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return productList;
-	}
 }

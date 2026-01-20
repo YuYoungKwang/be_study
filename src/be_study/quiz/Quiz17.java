@@ -5,41 +5,101 @@ import java.util.Scanner;
 public class Quiz17 {
 
 	public static void main(String[] args) {
-		/*1.
+
+		/*
+		1.
 		2x + 4y = 10 이 만족하는
 		모든 x, y 쌍을 구하시오.
-		(x와 y는 자연수 1~10)*/
-
+		(x와 y는 자연수 1~10)
 		
-		for (int x = 1; x <= 10; x++) {
-			for(int y = 1; y <= 10; y++) {
-				if(2*x + 4*y == 10) {
-					System.out.println("x= " + x + " y= " + y );
+		2x + 4y = 10
+		
+		x:1 y:2
+		2*1 + 4*2 = 10
+		
+		x:3 y:1
+		2*3 + 4*1 = 10
+		
+		
+		x: 1 ~ 10 
+		y: 1 ~ 10
+		
+		x: 1 1 1 1         2 2 2 2         3..4..  10 10 10 
+		y: 1 2 3 4.. 9 10  1 2 3 4 ..9 10           1  2 3  ... 10
+		
+		*/
+		
+		/*
+		
+		for(int x=1; x<=10; x++) {
+			for(int y=1; y<=10; y++) {
+				//실행문
+				if( 2*x + 4*y == 10 ) {
+					System.out.printf("(x:%d y:%d)\n", x, y);
 				}
 			}
 		}
-		System.out.println("-----------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------");
-		/*2.
+		
+		// x:3 y:1
+		// 2*3 + 4*1 = 10
+		// y: 2 3 4 5 ... 10
+		for(int x=1; x<=10; x++) {
+			for(int y=1; y<=10; y++) {
+				//실행문
+				
+				if(2*x + 4*y > 10) {
+					break;
+				}
+				
+				if( 2*x + 4*y == 10 ) {
+					System.out.printf("(x:%d y:%d)\n", x, y);
+				}
+			}
+		}
+		
+		//2x + 4y = 10
+		//x:1 -> 2
+		//x:2 -> 4
+		//x:3 -> 6
+		//x:4 -> 8
+		//x:5 -> 10
+		//x:6 -> 12
+		
+		for(int x=1; 2*x<10; x++) {
+			for(int y=1; 4*y<10; y++) {
+				//실행문
+				if( 2*x + 4*y == 10 ) {
+					System.out.printf("(x:%d y:%d)\n", x, y);
+				}
+			}
+		}
+		
+		*/
+
+		/*
+		2.
 		정수 2개를 입력 받아서,
 		아래 계산 결과를 출력하시오.
-		큰수 - 작은수*/
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("첫번째 정수를 입력해주세요 : ");
-		int num1 = scanner.nextInt();
-		System.out.print("두번째 정수를 입력해주세요 : ");
-		int num2 = scanner.nextInt();
+		큰수 - 작은수
+		 */
 		
-		if(num1 >= num2) {
-			System.out.println(num1 + " - " + num2 + " = "+ (num1 - num2));
-		} else if(num1 < num2){
-			System.out.println(num2 + " - " + num1 + " = "+ (num2 - num1));
+		/*
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("숫자 2개 입력하세요 : ");
+		int n1 = scanner.nextInt();
+		int n2 = scanner.nextInt();
+		
+		if(n1 > n2) { //true  n1 이 더 크다
+			System.out.printf("%d - %d = %d \n", n1, n2, n1-n2);
+		} else {  //n2 가 더 크거나 같다    n1==n2  n1-n2  n2-n1 
+			System.out.printf("%d - %d = %d \n", n2, n1, n2-n1);
 		}
-		System.out.println("-----------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------");
-		/*3.
+		*/
+		
+		
+		/*
+		3.
 		윷놀이 게임
 		4개의 윷을 입력받고 결과를 출력하시오.
 		(뒷도는 없습니다!)
@@ -48,54 +108,100 @@ public class Quiz17 {
 		ex) 입력 0 0 1 0
 		결과 도
 		입력 0 1 0 1
-		결과 개*/
-		System.out.print("윷을 입력해주세요 : ");
-		int yutNum1 = scanner.nextInt();
-		int yutNum2 = scanner.nextInt();
-		int yutNum3 = scanner.nextInt();
-		int yutNum4 = scanner.nextInt();
+		결과 개
 		
-		int result = yutNum1 + yutNum2 + yutNum3 + yutNum4;
+		n1==1 n2==0 n3==0 n4==0
+		n1==0 n2==1 n3==0 n4==0
+		n1==0 n2==0 n3==1 n4==0
+		n1==0 n2==0 n3==0 n4==1
 		
-		switch (result) {
-		case 0: {
+		 0 0 0 1 -> 1 개
+		 0 0 1 1 -> 2 개
+		 1 0 1 1 -> 3
+		 1 1 1 0 -> 3
+		 1 1 1 1 -> 4
+		 0 0 0 0 -> 0 
+		*/
+		
+		
+		
+		/*
+		 * 		뒤집어진 갯수
+			도: 1개 
+			개: 2개
+			걸: 3개
+			윷: 4개
+			모: 0개
+			
+		 */
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("윷 4개 입력 (0 or 1)");
+//		int n1, n2, n3, n4;
+//		n1 = scanner.nextInt();
+//		n2 = scanner.nextInt();
+//		n3 = scanner.nextInt();
+//		n4 = scanner.nextInt();
+		
+//		int count = n1 + n2 + n3 + n4;
+		
+		int[] arr = new int[4];
+		int count = 0;
+		
+		for(int i=0; i<arr.length; i++) {
+			arr[i] = scanner.nextInt();
+			count = count + arr[i];
+		}
+		
+//		for(int i=0; i<arr.length; i++) {
+//			count += arr[i];
+//		}
+		
+//		int count = 0;
+//		
+//		for(int i=0; i<4; i++) {
+//			count = count + scanner.nextInt();
+//		}
+		
+		switch(count) {
+		case 1:
+			System.out.println("도");
+			break;
+		case 2:
+			System.out.println("개");
+			break;
+		case 3:
+			System.out.println("걸");
+			break;
+		case 4:
+			System.out.println("윷");
+			break;
+		//case 0:
+		default: 
 			System.out.println("모");
 			break;
 		}
-		case 1: {
-			System.out.println("도");
-			break;
-		}
-		case 2: {
-			System.out.println("개");
-			break;
-		}
-		case 3: {
-			System.out.println("걸");
-			break;
-		}
-		case 4: {
-			System.out.println("윷");
-			break;
-		}
-		default:
-			System.out.println("잘못 입력하셨습니다.");
-			break;
-		}
-		System.out.println("-----------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------");
-		System.out.println("-----------------------------------------------------------");
-		/*
-		 * 4. 입력받은 수 만큼 별 출력하기 ex) 4
-		 ****
-		 * 5
-		 ******/
 		
-		System.out.print("출력하고 싶은 별 개수를 입력해주세요 : ");
-		int starNum1 = scanner.nextInt();
-		for(int i = 0; i < starNum1; i++) {
+		
+		
+		/*
+		4. 입력받은 수 만큼 별 출력하기
+		ex) 4
+		****
+		5
+		*****
+		*/
+		
+		/*
+		Scanner scanner = new Scanner(System.in);
+		int n = scanner.nextInt();
+		
+		for(int i=1; i<=n; i++){
 			System.out.print("*");
 		}
-		System.out.println();
+		*/
+		
 	}
+
 }

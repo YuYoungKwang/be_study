@@ -1,23 +1,17 @@
 package be_study.cls.cls11;
 
 public class ReturnMain {
+
 	public static void main(String[] args) {
+		//메소드 호출 -> 결과 return 
+		
+		//수능 성적 
+		//언어 수리 외국어
 		AllScore as1 = getScore();
 		System.out.println(as1.lang);
 		System.out.println(as1.math);
 		System.out.println(as1.eng);
-	}
-	
-	public static String scoreInfo() {
-		return "85,90,85";
-	}
-	
-	public static int mathScore() {
-		return 90;
-	}
-	
-	public static int engScore() {
-		return 80;
+		
 	}
 	
 	public static AllScore getScore() {
@@ -29,4 +23,17 @@ public class ReturnMain {
 		return as;
 	}
 	
+	public static String scoreInfo() {
+		//return "859080";
+		return "100,90,80"; //언어 수리 외국 , 구분
+	}
+	
+	public static int mathScore() {
+		return 90;
+	}
+	
+	public static int engScore() {
+		return 80;
+	}
+
 }

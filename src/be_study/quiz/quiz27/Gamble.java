@@ -11,12 +11,20 @@ public class Gamble {
 		/*
 		 * Math.random() 메소드를 활용하여 1~6 사이의 정수를 반환하도록 하 시오
 		 */
-		
-		return (int)(Math.random()*6) + 1;
+//		int result = (int)(Math.random() * 6) + 1; //1~6랜덤값
+//		return result;
+		return (int)(Math.random() * 6) + 1;
 	}
 
 	public static double exchange(double dollar) {
 		/* 입력받은 달러를 환전하여 반환 하시오 */
-		return dollar * 1082.25108;
+		
+		double exchangeRate = 1082.25108; //환율
+		//double won = dollar * 1082.25108; // * 환율
+		double won = dollar * exchangeRate;
+		
+		return won;
+		
+		//return dollar * 1082.25108;  // 달러 * 원달러환율
 	}
 }

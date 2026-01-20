@@ -13,12 +13,15 @@ public class Quiz02 {
 		상품가격 : 135000
 		시리얼번호 : 332L1545K
 		*/
-
-		String brand = "로지텍";
-		String proprietaryName = "mx keys";
-		int price = 135000;
-		String serialNum = "332L1545K";
 		
+		String brandName = "로지텍";
+		String productName = "mx keys";
+		//String price = "135000";
+		int price = 135000;
+		String serial = "332L1545K";
+		
+		System.out.println("브랜드명 : " + brandName);
+
 		/*
 		2. 가지고 있는 모니터 정보를 저장할 필요가 생겼습니다.
 		관련 정보 저장을 위해 아래 데이터 저장을 위한 변수를 선언하고 값을 저장해보세요!
@@ -29,19 +32,22 @@ public class Quiz02 {
 		HDMI포트여부 : true
 		소리출력가능여부 : false
 		*/
-		
-		String corporateName = "SAMSUNG";
-		int monitorSize = 24;
-		String monitorColor = "black";
-		boolean hasHDMIPort = true;
-		boolean isOutputSound = false;
-		
+		String company = "SAMSUNG";
+		int inch = 24;
+		String color = "black";
+		//String hdmi = "true";
+		boolean hasHdmiPort = true;
+		boolean isPlayedSound = false;
+
+		//      isOpend  isClosed
+		//      canPlaySound
+
 		//3. 3.14 값을 가지고 있는 pi 라는 실수형 변수를 만들고 화면에 출력하세요.
 		//예시) 원주율 : 3.14
-
-		double pi = 3.14;
-		System.out.println(pi);
 		
+		double pi = 3.14;
+		System.out.println( "원주율 : " + pi );
+
 		/*
 		4. 세 개의 문자열 변수가 우리에게 주어졌습니다. 그런데 해당 문자열 변수는 어떤 학생의 점수를 가지고 있습니다.
 		주어진 점수들의 전체 합을 계산하고 싶습니다. 모든 점수를 더해서 총점이 얼마인지 출력하세요.
@@ -52,15 +58,21 @@ public class Quiz02 {
 		String englishScore = "90";
 		String artScore = "70";
 		*/
-
 		String mathScore = "85";
 		String englishScore = "90";
 		String artScore = "70";
+		//문자열 -> 숫자형태로 변환 -> 더하기
+		System.out.println("총점 : " + mathScore + englishScore + artScore);
 		
-		int totalScore = Integer.valueOf(mathScore) + Integer.valueOf(englishScore) + Integer.valueOf(artScore);
+		System.out.println("총점 : " + ( Integer.parseInt(mathScore) + Integer.parseInt(englishScore) + Integer.parseInt(artScore)) );
 		
-		System.out.println(totalScore);
-		
+		int math = Integer.parseInt(mathScore);
+		int eng = Integer.parseInt(englishScore);
+		int art = Integer.parseInt(artScore);
+
+		int totalScore = math + eng + art;
+		System.out.println("총점 : " + totalScore);
+
 		/*
 		5. 조카에게 나눗셈 계산하는 연습을 시키고 있습니다.
 		4 / 10 을 실행시켜서 결과가 0.4 가 나오는 것을 보여주려고 하는데 아래 계산 결과가 맞지 않습니다.
@@ -70,13 +82,22 @@ public class Quiz02 {
 		int num2 = 10;
 		double num3 = num1 / num2 ;
 		System.out.println( num3 );
-
 		*/
 		
 		int num1 = 4;
 		int num2 = 10;
-		double num3 = (double)num1 / (double)num2 ;
+		double num3 = (double)num1 / num2 ;   // int/int = int !!! -> double
+		
+		num3 = (double)num1 / num2 ;	// double/int -> double 
+		num3 = num1 / (double)num2 ;
+		num3 = (double)num1 / (double)num2 ;
+		
 		System.out.println( num3 );
+
+		double num4 = num1;   //  double num4 = 4.0
+		double num5 = num4 / num2;
+		System.out.println(num5);
+		
 	}
 
 }

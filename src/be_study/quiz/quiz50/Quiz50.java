@@ -1,6 +1,7 @@
 package be_study.quiz.quiz50;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,102 +9,133 @@ import org.json.simple.parser.JSONParser;
 
 public class Quiz50 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		try {
-			String jsonString = ""
-					+ "{"
-					+ "\"도서관\": {"
-					+ "\"위치\": \"서울특별시 강남구\","
-					+ "\"운영시간\": {"
-					+ "\"평일\": [\"09:00\", \"21:00\"],"
-					+ "\"주말\": [\"10:00\", \"18:00\"]"
-					+ "},"
-					+ "\"책목록\": ["
-					+ "{"
-					+ "\"제목\": \"자바 프로그래밍\","
-					+ "\"저자\": \"홍길동\","
-					+ "\"출판연도\": 2023,"
-					+ "\"가격\": 25000,"
-					+ "\"대출가능\": true,"
-					+ "\"카테고리\": [\"프로그래밍\", \"자기계발\"]"
-					+ "},"
-					+ "{"
-					+ "\"제목\": \"데이터 분석 입문\","
-					+ "\"저자\": \"김철수\","
-					+ "\"출판연도\": 2022,"
-					+ "\"가격\": 28000,"
-					+ "\"대출가능\": false,"
-					+ "\"카테고리\": [\"데이터\", \"분석\"]"
-					+ "}"
-					+ "],"
-					+ "\"특별서비스\": {"
-					+ "\"키오스크\": true,"
-					+ "\"스터디룸\": {"
-					+ "\"개수\": 5,"
-					+ "\"예약 가능\": true,"
-					+ "\"비용\": {"
-					+ "\"1시간당\": 5000,"
-					+ "\"하루\": 30000"
-					+ "}"
-					+ "}"
-					+ "}"
-					+ "}"
-					+ "}";
+		String jsonString = "{\r\n"
+				+ "\"id\": 1,\r\n"
+				+ "\"name\": \"John Doe\",\r\n"
+				+ "\"contacts\": [\r\n"
+				+ "{\r\n"
+				+ "\"type\": \"email\",\r\n"
+				+ "\"value\": \"john.doe@example.com\"\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "\"type\": \"phone\",\r\n"
+				+ "\"value\": \"01023456789\"\r\n"
+				+ "}\r\n"
+				+ "],\r\n"
+				+ "\"address\": {\r\n"
+				+ "\"street\": \"123 Main Street\",\r\n"
+				+ "\"city\": \"Seoul\",\r\n"
+				+ "\"zipcode\": \"12345\"\r\n"
+				+ "},\r\n"
+				+ "\"orders\": [\r\n"
+				+ "{\r\n"
+				+ "\"orderId\": \"ORD-001\",\r\n"
+				+ "\"date\": \"2024-07-09\",\r\n"
+				+ "\"items\": [\r\n"
+				+ "{\r\n"
+				+ "\"id\": 1,\r\n"
+				+ "\"name\": \"Smartphone\",\r\n"
+				+ "\"quantity\": 2\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "\"id\": 2,\r\n"
+				+ "\"name\": \"Laptop\",\r\n"
+				+ "\"quantity\": 1\r\n"
+				+ "}\r\n"
+				+ "]\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "\"orderId\": \"ORD-002\",\r\n"
+				+ "\"date\": \"2024-07-10\",\r\n"
+				+ "\"items\": [\r\n"
+				+ "{\r\n"
+				+ "\"id\": 3,\r\n"
+				+ "\"name\": \"Headphones\",\r\n"
+				+ "\"quantity\": 1\r\n"
+				+ "}\r\n"
+				+ "]\r\n"
+				+ "}\r\n"
+				+ "]\r\n"
+				+ "}";
+		
+		JSONParser parser = new JSONParser();
+		JSONObject obj = (JSONObject)parser.parse(jsonString);
+		
+		CustomerDTO customerDTO = new CustomerDTO();
+		
+		//customerDTO.setId( Integer.parseInt(obj.get("id").toString()) );
+		//customerDTO.setName(obj.get("name").toString());
+
+		customerDTO.setId( objectToInt(obj.get("id")) );
+		customerDTO.setName( objectToString(obj.get("name")) );
+		
+		JSONArray contactsArray = (JSONArray)obj.get("contacts");
+		List<Contact> contacts = new ArrayList<Contact>();
+		for(int i=0; i<contactsArray.size(); i++) {
+			JSONObject contactObject = (JSONObject)contactsArray.get(i);
 			
-			JSONParser jsonParser = new JSONParser();
-			JSONObject jsonObj = (JSONObject)jsonParser.parse(jsonString);
-			JSONObject librarie = (JSONObject)jsonObj.get("도서관");
+			Contact contact = new Contact();
+			contact.setType( objectToString(contactObject.get("type") ));
+			contact.setValue( objectToString(contactObject.get("value") ));
+			contacts.add(contact);
+		}
+		customerDTO.setContacts(contacts);
+		
+		
+		JSONObject addressObject = (JSONObject)obj.get("address");
+		Address address = new Address();
+		
+		address.setStreet( objectToString(addressObject.get("street")) );
+		address.setCity( objectToString(addressObject.get("city")) );
+		address.setZipcode( objectToString(addressObject.get("zipcode")) );
+		
+		customerDTO.setAddress(address);
+		
+		JSONArray ordersArray = (JSONArray)obj.get("orders");
+		List<Order> orders = new ArrayList<Order>();
+		
+		for(int i=0; i<ordersArray.size(); i++) {
+			JSONObject orderObject = (JSONObject)ordersArray.get(i);
 			
-			System.out.println("위치 : "+librarie.get("위치"));
+			Order order = new Order();
+			order.setOrderId( objectToString(orderObject.get("orderId")) );
+			order.setDate( objectToString(orderObject.get("date")) );
 			
-			JSONObject openTime = (JSONObject)librarie.get("운영시간");
-			JSONArray weekday = (JSONArray)openTime.get("평일");
-			System.out.println("운영시간 평일 : " + weekday.get(0) + "~" + weekday.get(1));
-//			for (int i = 0; i < weekday.size(); i++) {
-//				System.out.println(weekday.get(i));
-//			}
-			JSONArray weekend = (JSONArray)openTime.get("주말");
-			System.out.println("운영시간 주말 : " + weekend.get(0) + "~" + weekend.get(1));
-//			for (int i = 0; i < weekend.size(); i++) {
-//				System.out.println(weekend.get(i));
-//			}
-			
-			JSONArray bookList = (JSONArray)librarie.get("책목록");
-			System.out.println("책목록");
-			System.out.println("================================");
-			for (int i = 0; i < bookList.size(); i++) {
-				JSONObject book = (JSONObject)bookList.get(i);
-				System.out.println("제목 : "+book.get("제목"));	
-				System.out.println("저자 : "+book.get("저자"));	
-				System.out.println("출판연도 : "+book.get("출판연도"));	
-				System.out.println("가격 : "+book.get("가격"));	
-				System.out.println("대출가능 : "+book.get("대출가능"));
-				JSONArray category = (JSONArray)book.get("카테고리");
-				System.out.print("카테고리 : ");
-				for(int j = 0; j < category.size(); j++) {
-					System.out.print(category.get(j) + " ");
-				}
-				System.out.println();
-				System.out.println("================================");
+			JSONArray itemsArray = (JSONArray)orderObject.get("items");
+			List<Item> items = new ArrayList<Item>();
+			for(int j=0; j<itemsArray.size(); j++) {
+				JSONObject itemObject = (JSONObject)itemsArray.get(j);
+				Item item = new Item();
+				
+				item.setId( objectToInt(itemObject.get("id")));
+				item.setName( objectToString(itemObject.get("name")));
+				item.setQuantity( objectToInt(itemObject.get("quantity")));
+				
+				items.add(item);
 			}
 			
-			JSONObject service = (JSONObject)librarie.get("특별서비스");
-			System.out.println("특별서비스");
-			System.out.println("키오스크 : "+service.get("키오스크"));
-			System.out.println();
-			JSONObject studyRoom = (JSONObject)service.get("스터디룸");
-			System.out.println("스터디룸");
-			System.out.println("개수 : "+studyRoom.get("개수"));
-			System.out.println("예약 가능 : "+studyRoom.get("예약 가능"));
-			System.out.println();
-			JSONObject price = (JSONObject)studyRoom.get("비용");
-			System.out.println("비용");
-			System.out.println("1시간당 : "+price.get("1시간당"));
-			System.out.println("하루 : "+price.get("하루"));
-		} catch (Exception e) {
-			// TODO: handle exception
+			order.setItems(items);
+			
+			orders.add(order);
 		}
+		
+		customerDTO.setOrders(orders);
+		
+		System.out.println(customerDTO); //JSON 파싱 -> DTO
+		
+	}
+	
+	public static int objectToInt(Object obj) {
+		return Integer.parseInt(obj.toString());
+	}
+	
+	public static String objectToString(Object obj) {
+		if(obj == null)
+			return null;   //return "";
+		else 
+			return obj.toString();
 	}
 
 }
